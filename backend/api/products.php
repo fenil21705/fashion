@@ -57,9 +57,15 @@ function handleGet($pdo)
             $stmt->execute($params);
             $products = $stmt->fetchAll();
 
-            // Decode JSON fields for all
+            // Decode JSON fields for all and remove base64 payloads to prevent Vercel 4.5MB limit crashes
             foreach ($products as &$p) {
-                $p['images'] = json_decode($p['images'] ?? '[]');
+                // If it's a giant base64 string, replace it with our proxy endpoint
+                if (isset($p['image_url']) && strpos($p['image_url'], 'data:image') === 0) {
+                    $p['image_url'] = "backend/api/image.php?id=" . $p['id'];
+                }
+                
+                // Never send full giant images array over the 'all products' list endpoint
+                unset($p['images']);
                 $p['sizes'] = json_decode($p['sizes'] ?? '[]');
             }
 
