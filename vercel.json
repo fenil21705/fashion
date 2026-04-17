@@ -1,7 +1,12 @@
 {
-    "functions": {
-        "backend/api/*.php": {
-            "runtime": "vercel-php@0.6.1"
-        }
+  "builds": [
+    {
+      "src": "backend/api/*.php",
+      "use": "vercel-php@0.6.1"
+    },
+    {
+      "src": "**/*.{html,css,js,png,jpg,jpeg,svg,gif,json}",
+      "use": "@vercel/static"
     }
+  ]
 }
