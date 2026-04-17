@@ -1,6 +1,6 @@
 <?php
 // backend/api/admin.php
-require_once '../config.php';
+require_once 'config.php';
 
 // Simple Authentication
 $pass = $_GET['password'] ?? '';
