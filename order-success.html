@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | Luxe Fashion</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .success-icon {
+            font-size: 5rem;
+            color: var(--success);
+            margin-bottom: 20px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="nav-links">
+                </div>
+                <a href="index.html" class="logo">LUXE.</a>
+                <div class="nav-icons">
+                    <!-- Minimal nav for this page -->
+                    <a href="index.html"><i class="fas fa-home"></i></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="section container text-center"
+        style="min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="mb-2">Order Placed Successfully!</h1>
+        <p class="mb-2" style="font-size: 1.1rem; color: var(--text-light); max-width: 500px;">
+            Thank you for shopping with Luxe. Your order has been confirmed and is being processed.
+        </p>
+
+        <div id="order-details"
+            style="background: var(--background-alt); padding: 20px; border-radius: var(--radius); margin-bottom: 30px; width: 100%; max-width: 400px;">
+            <p><strong>Order ID:</strong> <span id="display-order-id">Loading...</span></p>
+            <p style="font-size: 0.9rem; margin-top: 10px;">You will receive an email confirmation shortly.</p>
+        </div>
+
+        <div style="display: flex; gap: 20px;">
+            <a href="profile.html" class="btn btn-outline-white"
+                style="color: var(--primary); border-color: var(--primary);">View Order</a>
+            <a href="shop.html" class="btn">Continue Shopping</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="copyright text-center">
+                &copy; 2025 Luxe Fashion. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (id) {
+                document.getElementById('display-order-id').textContent = '#' + id;
+            } else {
+                document.getElementById('display-order-id').textContent = 'N/A';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop | Luxe Fashion</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <div class="marquee-container">
+            Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on
+            Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns
+            &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free
+            Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid
+            Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New
+            Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="shop.html?cat=Men">Men</a>
+                    <a href="shop.html?cat=Women">Women</a>
+
+                </div>
+                <a href="index.html" class="logo">LUXE.</a>
+                <div class="nav-icons">
+                    <a href="wishlist.html"><i class="far fa-heart"></i></a>
+                    <a href="shop.html"><i class="fas fa-store"></i></a>
+                    <a href="login.html"><i class="fas fa-user"></i></a>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="section" style="background-color: var(--background-alt); padding: 40px 0;">
+        <div class="container text-center">
+            <h1>Shop Collection</h1>
+            <p>Curated pieces for the discerning individual.</p>
+        </div>
+    </div>
+
+    <section class="section container">
+        <div class="shop-layout grid">
+            <!-- Sidebar -->
+            <aside>
+                <div class="filter-group">
+                    <h3 class="filter-title">Shop for</h3>
+                    <div class="filter-list">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="Men" onchange="toggleFilter('gender', 'Men')"> Men
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="Women" onchange="toggleFilter('gender', 'Women')"> Women
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">Categories</div>
+                    <div class="filter-list">
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="T-Shirt" onchange="toggleFilter('category', 'T-Shirt')">
+                            T-Shirts
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="Shirt" onchange="toggleFilter('category', 'Shirt')"> Shirts
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="Jeans" onchange="toggleFilter('category', 'Jeans')"> Jeans
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="Top" onchange="toggleFilter('category', 'Top')"> Tops
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="Dress" onchange="toggleFilter('category', 'Dress')"> Dresses
+                        </label>
+                        <label class="filter-checkbox">
+                            <input type="checkbox" value="Shorts" onchange="toggleFilter('category', 'Shorts')"> Shorts
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-title">Price Range</div>
+                    <div class="price-inputs">
+                        <input type="number" id="min-price" placeholder="Min" class="price-input" min="0">
+                        <input type="number" id="max-price" placeholder="Max" class="price-input" min="0">
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%; font-size: 0.9rem; padding: 10px;"
+                        onclick="applyFilters()">Apply</button>
+                    <button class="btn"
+                        style="width: 100%; font-size: 0.85rem; padding: 8px; margin-top: 10px; background: none; border: none; color: var(--text-light); text-decoration: underline; cursor: pointer;"
+                        onclick="clearFilters()">Clear Filters</button>
+                </div>
+
+            </aside>
+
+            <!-- Product Grid -->
+            <div>
+                <div class="sort-bar">
+                    <div id="result-count" style="color: var(--text-light); font-size: 0.9rem;">Showing all products
+                    </div>
+                    <select id="sort-select" class="sort-select" onchange="applyFilters()">
+                        <option value="newest">Sort by: Newest</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-3" id="product-grid">
+                    <div class="text-center" style="grid-column: 1/-1;">Loading collection...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="copyright text-center">
+                &copy; 2025 Luxe Fashion. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quick Add Modal -->
+    <div class="modal-overlay" id="quick-add-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modal-body">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // State
+        let allProducts = [];
+        let activeFilters = {
+            gender: new Set(),
+            category: new Set()
+        };
+
+        // Quick Add State
+        let currentProduct = null;
+        let selectedSize = null;
+        let selectedQty = 1;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check URL param for initial category (backward compatibility with links)
+            const urlParams = new URLSearchParams(window.location.search);
+            const catParam = urlParams.get('cat');
+
+            if (catParam) {
+                // Determine if it's gender or category based on value (simplified check)
+                if (['Men', 'Women'].includes(catParam)) {
+                    activeFilters.gender.add(catParam);
+                } else {
+                    activeFilters.category.add(catParam);
+                }
+            }
+
+            // Sync UI checkboxes
+            updateCheckboxUI();
+
+            // Load Products
+            await loadProducts();
+        });
+
+        function updateCheckboxUI() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                // Determine type based on value or parent... here assuming values are unique enough or using data attr would be better.
+                // Simple check:
+                let type = ['Men', 'Women'].includes(cb.value) ? 'gender' : 'category';
+
+                if (activeFilters[type].has(cb.value)) {
+                    cb.checked = true;
+                }
+            });
+        }
+
+        async function loadProducts() {
+            const container = document.getElementById('product-grid');
+            try {
+                // Fetch ALL products to allow client-side filtering
+                allProducts = await App.fetch('products.php');
+                applyFilters(); // Initial render
+            } catch (err) {
+                container.innerHTML = '<p>Failed to load products. Please try again later.</p>';
+            }
+        }
+
+        function toggleFilter(type, value) {
+            if (activeFilters[type].has(value)) {
+                activeFilters[type].delete(value);
+            } else {
+                activeFilters[type].add(value);
+            }
+            applyFilters();
+        }
+
+        function clearFilters() {
+            activeFilters.gender.clear();
+            activeFilters.category.clear();
+            document.getElementById('min-price').value = '';
+            document.getElementById('max-price').value = '';
+            document.getElementById('sort-select').value = 'newest';
+
+            // Uncheck all boxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+            applyFilters();
+
+            // Clear URL params
+            const url = new URL(window.location);
+            url.searchParams.delete('cat');
+            window.history.pushState({}, '', url);
+        }
+
+        function applyFilters() {
+            const minPrice = document.getElementById('min-price').value;
+            const maxPrice = document.getElementById('max-price').value;
+            const sortValue = document.getElementById('sort-select').value;
+
+            let filtered = allProducts.filter(p => {
+                // Gender Filter (OR logic within gender)
+                if (activeFilters.gender.size > 0 && !activeFilters.gender.has(p.gender)) {
+                    // But wait, if we only select Category, we shouldn't fail gender check if gender is empty.
+                    // If gender set has items, product MUST match one of them.
+                    return false;
+                }
+
+                // Category Filter (OR logic within category)
+                if (activeFilters.category.size > 0 && !activeFilters.category.has(p.category)) {
+                    return false;
+                }
+
+                // Price Filter
+                if (minPrice && p.price < parseFloat(minPrice)) return false;
+                if (maxPrice && p.price > parseFloat(maxPrice)) return false;
+
+                return true;
+            });
+
+            // Sort
+            if (sortValue === 'price-asc') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortValue === 'price-desc') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortValue === 'newest') {
+                filtered.sort((a, b) => b.id - a.id);
+            }
+
+            renderGrid(filtered);
+            document.getElementById('result-count').textContent = `Showing ${filtered.length} products`;
+        }
+
+        function renderGrid(products) {
+            const container = document.getElementById('product-grid');
+
+            if (products.length === 0) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px;">No products found matching your filters.</div>';
+                return;
+            }
+
+            container.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="product.html?id=${p.id}">
+                            <img src="${p.image_url}" alt="${p.name}">
+                        </a>
+                        <button class="wishlist-btn ${App.isInWishlist(p.id) ? 'active' : ''}" data-id="${p.id}" onclick="App.toggleWishlist(${p.id})">
+                            <i class="${App.isInWishlist(p.id) ? 'fas' : 'far'} fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${p.category}</div>
+                        <h3 class="product-title"><a href="product.html?id=${p.id}">${p.name}</a></h3>
+                        <div class="product-price">${App.formatPrice(p.price)}</div>
+                        <button class="btn add-to-cart-btn" onclick="openQuickAdd(event, ${p.id})">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openQuickAdd(event, id) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            currentProduct = allProducts.find(p => p.id == id);
+            if (!currentProduct) return;
+
+            selectedSize = null;
+            selectedQty = 1;
+
+            const modalInfo = document.getElementById('modal-body');
+
+            // Show size if product has 'sizes' array OR if category implies it (fallback)
+            const sizes = (currentProduct.sizes && currentProduct.sizes.length > 0)
+                ? currentProduct.sizes
+                : (['Men', 'Women', 'Unisex'].includes(currentProduct.gender) || ['T-Shirt', 'Shirt', 'Dress', 'Jeans', 'Top', 'Shorts'].includes(currentProduct.category) ? ['S', 'M', 'L', 'XL', 'XXL'] : []);
+
+            const showSize = sizes.length > 0;
+
+            // Auto-select first size
+            if (showSize && sizes.length > 0) {
+                selectedSize = sizes[0];
+            }
+
+            let html = `
+                <div class="modal-product-info">
+                    <img src="${currentProduct.image_url}" class="modal-product-img">
+                    <div>
+                        <h3 style="font-family: var(--font-heading); margin-bottom: 5px;">${currentProduct.name}</h3>
+                        <div style="font-weight: 700; color: var(--accent); font-size: 1.2rem;">${App.formatPrice(currentProduct.price)}</div>
+                    </div>
+                </div>
+            `;
+
+            if (showSize) {
+                const sizesHtml = sizes.map((s, i) => `
+                    <div class="size-option ${i === 0 ? 'selected' : ''}" onclick="selectModalSize(this, '${s}')">${s}</div>
+                `).join('');
+
+                html += `
+                    <div class="mb-2">
+                        <label class="form-label" style="font-size: 0.9rem; font-weight: 700; display: block; margin-bottom: 10px;">Select Size</label>
+                        <div id="modal-size-options">
+                            ${sizesHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="mb-2">
+                    <label class="form-label" style="font-size: 0.9rem; font-weight: 700; display: block; margin-bottom: 10px;">Quantity</label>
+                    <div class="qty-selector" style="border: 1px solid #ddd; width: 120px; height: 45px; display: flex; align-items: center;">
+                        <button class="qty-btn" onclick="updateModalQty(-1)" style="font-size: 1.2rem;">&minus;</button>
+                        <input type="number" id="modal-qty" value="1" min="1" max="10" class="qty-input" style="font-size: 1rem; width: 40px; font-weight: 600;" readonly>
+                        <button class="qty-btn" onclick="updateModalQty(1)" style="font-size: 1.2rem;">&plus;</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn" style="width: 100%; background-color: #000; color: white; border: none; padding: 15px; font-weight: 700; text-transform: uppercase;" onclick="confirmQuickAdd()">Add to Cart</button>
+                </div>
+            `;
+
+            modalInfo.innerHTML = html;
+            document.getElementById('quick-add-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('quick-add-modal').style.display = 'none';
+        }
+
+        function selectModalSize(el, size) {
+            document.querySelectorAll('#modal-size-options .size-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedSize = size;
+        }
+
+        function updateModalQty(change) {
+            selectedQty += change;
+            if (selectedQty < 1) selectedQty = 1;
+            if (selectedQty > 10) selectedQty = 10;
+            document.getElementById('modal-qty').value = selectedQty;
+        }
+
+        function confirmQuickAdd() {
+            // Re-calc showSize safely
+            const sizes = (currentProduct.sizes && currentProduct.sizes.length > 0)
+                ? currentProduct.sizes
+                : (['Men', 'Women', 'Unisex'].includes(currentProduct.gender) || ['T-Shirt', 'Shirt', 'Dress', 'Jeans', 'Top', 'Shorts'].includes(currentProduct.category) ? ['S', 'M', 'L', 'XL', 'XXL'] : []);
+
+            const showSize = sizes.length > 0;
+
+            if (showSize && !selectedSize) {
+                alert('Please select a size');
+                return;
+            }
+
+            const productToAdd = { ...currentProduct };
+            if (selectedSize) {
+                productToAdd.name = `${currentProduct.name} (${selectedSize})`;
+                productToAdd.id = `${currentProduct.id}-${selectedSize}`;
+            }
+
+            App.addToCart(productToAdd, selectedQty);
+            closeModal();
+        }
+
+        document.getElementById('quick-add-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'quick-add-modal') closeModal();
+        });
+    </script>
+</body>
+
+</html>

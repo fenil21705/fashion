@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | Luxe Fashion</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <div class="marquee-container">
+            Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on
+            Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns
+            &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free
+            Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid
+            Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New
+            Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="shop.html?cat=Men">Men</a>
+                    <a href="shop.html?cat=Women">Women</a>
+
+                </div>
+                <a href="index.html" class="logo">LUXE.</a>
+                <div class="nav-icons">
+                    <a href="shop.html"><i class="fas fa-store"></i></a>
+                    <a href="login.html"><i class="fas fa-user"></i></a>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="section" style="background-color: var(--background-alt); padding: 40px 0;">
+        <div class="container text-center">
+            <h1>Shopping Cart</h1>
+        </div>
+    </div>
+
+    <section class="section container">
+        <div class="cart-layout grid" id="cart-layout">
+            <!-- Cart Items -->
+            <div id="cart-container">
+                <div class="cart-header">
+                    <div>Product</div>
+                    <div>Price</div>
+                    <div>Quantity</div>
+                    <div>Total</div>
+                    <div></div>
+                </div>
+                <div id="cart-items">
+                    <!-- Items injected here -->
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div>
+                <div
+                    style="background: #f9f9f9; padding: 30px; border-radius: var(--radius); border: 1px solid var(--border);">
+                    <h3>Order Summary</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                        <span>Subtotal</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div
+                        style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem;">
+                        <span>Total</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                    <a href="checkout.html" class="btn btn-accent" style="width: 100%; text-align: center;">Proceed to
+                        Checkout</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCart();
+            // Listen for cart updates from other tabs/events if we add that logic later
+        });
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            const cart = App.state.cart;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 0;">
+                        <p class="mb-2" style="color: var(--text-light);">Your cart is currently empty.</p>
+                        <a href="shop.html" class="btn btn-outline" style="border-color: var(--primary);">Continue Shopping</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-product">
+                        <img src="${item.image_url}" alt="${item.name}">
+                        <div class="cart-product-info">
+                            <h3><a href="product.html?id=${item.id}">${item.name}</a></h3>
+                            <div style="font-size: 0.85rem; color: var(--text-light);">Category: ${item.category || 'Fashion'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-price">${App.formatPrice(item.price)}</div>
+                    
+                    <div>
+                        <div class="cart-qty">
+                            <button class="cart-qty-btn" onclick="updateQty('${item.id}', ${item.quantity - 1})">-</button>
+                            <input type="number" value="${item.quantity}" class="cart-qty-input" readonly>
+                            <button class="cart-qty-btn" onclick="updateQty('${item.id}', ${item.quantity + 1})">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-total">${App.formatPrice(item.price * item.quantity)}</div>
+                    
+                    <div>
+                        <button onclick="removeItem('${item.id}')" class="remove-btn" title="Remove Item">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            updateTotals();
+        }
+
+        function updateQty(id, qty) {
+            App.updateCartItem(id, qty);
+            renderCart();
+        }
+
+        function removeItem(id) {
+            App.removeFromCart(id);
+            renderCart();
+        }
+
+        function updateTotals() {
+            const total = App.getCartTotal();
+            const formatted = App.formatPrice(total);
+            document.getElementById('subtotal').textContent = formatted;
+            document.getElementById('total').textContent = formatted;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Luxe Fashion</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="nav-links">
+                    <a href="cart.html">Back to Cart</a>
+                </div>
+                <a href="index.html" class="logo">LUXE.</a>
+                <div class="nav-icons">
+                    <a href="shop.html"><i class="fas fa-store"></i></a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="section" style="background-color: var(--background-alt); padding: 40px 0;">
+        <div class="container text-center">
+            <h1>Checkout</h1>
+        </div>
+    </div>
+
+    <section class="section container">
+        <form class="checkout-layout grid" id="checkout-form">
+            <!-- Shipping Details -->
+            <div>
+                <h3 class="mb-2">Shipping Information</h3>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <input type="text" class="form-control" required>
+                </div>
+                <div class="grid grid-3">
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">State</label>
+                        <input type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">PIN Code</label>
+                        <input type="text" class="form-control" placeholder="e.g. 400001" required>
+                    </div>
+                </div>
+
+                <h3 class="mb-2" style="margin-top: 20px;">Payment Method</h3>
+                <div class="payment-methods"
+                    style="border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;">
+                    <!-- Tabs -->
+                    <div
+                        style="display: flex; background: var(--background-alt); border-bottom: 1px solid var(--border);">
+                        <div class="p-tab active" onclick="selectPayment('card')"
+                            style="flex: 1; padding: 15px; text-align: center; cursor: pointer; font-weight: 500; border-right: 1px solid var(--border);">
+                            Card</div>
+                        <div class="p-tab" onclick="selectPayment('upi')"
+                            style="flex: 1; padding: 15px; text-align: center; cursor: pointer; font-weight: 500; border-right: 1px solid var(--border);">
+                            UPI</div>
+                        <div class="p-tab" onclick="selectPayment('cod')"
+                            style="flex: 1; padding: 15px; text-align: center; cursor: pointer; font-weight: 500;">COD
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div style="padding: 20px;">
+                        <!-- Card Form -->
+                        <div id="pay-card" class="pay-option">
+                            <div class="form-group">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-control" placeholder="0000 0000 0000 0000">
+                            </div>
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Expiry</label>
+                                    <input type="text" class="form-control" placeholder="MM/YY">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CVV</label>
+                                    <input type="text" class="form-control" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- UPI Form -->
+                        <div id="pay-upi" class="pay-option" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">UPI ID</label>
+                                <input type="text" class="form-control" placeholder="username@bank">
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-light);">Google Pay, PhonePe, Paytm, BHIM</p>
+                        </div>
+
+                        <!-- COD Form -->
+                        <div id="pay-cod" class="pay-option" style="display: none;">
+                            <p>Pay with cash upon delivery.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div>
+                <div
+                    style="background: #fff; padding: 30px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow);">
+                    <h3>Your Order</h3>
+                    <div id="order-items"
+                        style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 20px;">
+                        <!-- Injected via JS -->
+                    </div>
+
+                    <div
+                        style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; font-size: 1.2rem;">
+                        <span>Total</span>
+                        <span id="order-total">$0.00</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-accent" style="width: 100%;">Place Order</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="copyright text-center">
+                &copy; 2025 Luxe Fashion. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!App.state.user) {
+                alert('Please login to place an order.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const cart = App.state.cart;
+            if (cart.length === 0) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            const itemsContainer = document.getElementById('order-items');
+            itemsContainer.innerHTML = cart.map(item => `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>${item.name} <small>x${item.quantity}</small></span>
+                    <span>${App.formatPrice(item.price * item.quantity)}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('order-total').textContent = App.formatPrice(App.getCartTotal());
+
+            document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Simulate processing
+                const btn = e.target.querySelector('button[type="submit"]');
+                const originalText = btn.textContent;
+                btn.textContent = 'Processing...';
+                btn.disabled = true;
+
+                try {
+                    // Prepare Order Data
+                    const emailInput = document.querySelector('input[type="email"]');
+                    // Collect Shipping Info
+                    const shippingInfo = {
+                        firstName: document.querySelector('input[placeholder="First Name"]')?.value || document.querySelectorAll('input[type="text"]')[0].value,
+                        lastName: document.querySelector('input[placeholder="Last Name"]')?.value || document.querySelectorAll('input[type="text"]')[1].value,
+                        address: document.querySelector('input[placeholder="Address"]')?.value || document.querySelectorAll('input[type="text"]')[2].value,
+                        city: document.querySelector('input[placeholder="City"]')?.value || document.querySelectorAll('input[type="text"]')[3].value,
+                        state: document.querySelector('input[placeholder="State"]')?.value || document.querySelectorAll('input[type="text"]')[4].value,
+                        pinCode: document.querySelector('input[placeholder="e.g. 400001"]')?.value
+                    };
+
+                    // Collect Payment Info
+                    let paymentMethod = 'cod';
+                    let paymentDetails = null;
+
+                    if (document.getElementById('pay-card').style.display !== 'none') {
+                        paymentMethod = 'card';
+                        const cardNum = document.querySelector('#pay-card input[placeholder="0000 0000 0000 0000"]').value;
+                        paymentDetails = { last4: cardNum.slice(-4) || 'xxxx' };
+                    } else if (document.getElementById('pay-upi').style.display !== 'none') {
+                        paymentMethod = 'upi';
+                        paymentDetails = { upiId: document.querySelector('#pay-upi input').value };
+                    }
+
+                    const orderData = {
+                        user_id: App.state.user ? App.state.user.id : 1, // Fallback to 1 for guest
+                        email: emailInput ? emailInput.value : (App.state.user ? App.state.user.email : 'guest@example.com'),
+                        shipping_info: shippingInfo,
+                        payment_info: { method: paymentMethod, details: paymentDetails },
+                        total_amount: App.getCartTotal(),
+                        items: cart.map(i => ({ product_id: i.id, quantity: i.quantity, price: i.price }))
+                    };
+
+                    const result = await App.fetch('orders.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(orderData)
+                    });
+
+                    // Clear Cart
+                    localStorage.removeItem('cart');
+                    App.state.cart = [];
+
+                    console.log('Order placed:', result);
+                    App.showToast('Order placed successfully! Redirecting...');
+                    setTimeout(() => {
+                        console.log('Redirecting to order-success.html...');
+                        if (result.order_id) {
+                            window.location.href = `order-success.html?id=${result.order_id}`;
+                        } else {
+                            window.location.href = 'order-success.html';
+                        }
+                    }, 1000);
+
+                } catch (err) {
+                    console.error(err);
+                    App.showToast('Failed to place order: ' + err.message, 'error');
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            });
+        });
+        function selectPayment(method) {
+            // Update UI
+            document.querySelectorAll('.pay-option').forEach(el => el.style.display = 'none');
+            document.getElementById(`pay-${method}`).style.display = 'block';
+
+            document.querySelectorAll('.p-tab').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.p-tab').forEach(el => {
+                if (el.getAttribute('onclick').includes(method)) el.classList.add('active');
+            });
+
+            // Update button text
+            const btn = document.querySelector('button[type="submit"]');
+            if (method === 'cod') btn.textContent = 'Place Order (Cash on Delivery)';
+            else btn.textContent = 'Pay & Place Order';
+        }
+    </script>
+</body>
+
+</html>

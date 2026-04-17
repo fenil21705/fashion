@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Luxe Fashion</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <div class="marquee-container">
+            Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on
+            Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns
+            &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free
+            Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid
+            Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New
+            Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="shop.html?cat=Men">Men</a>
+                    <a href="shop.html?cat=Women">Women</a>
+
+                </div>
+                <a href="index.html" class="logo">LUXE.</a>
+                <div class="nav-icons">
+                    <a href="wishlist.html"><i class="far fa-heart"></i></a>
+                    <a href="shop.html"><i class="fas fa-store"></i></a>
+                    <a href="login.html"><i class="fas fa-user"></i></a>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Product Details -->
+    <section class="section container">
+        <div class="product-layout grid" id="product-details">
+            <div class="text-center" style="grid-column: 1/-1;">Loading product details...</div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="section container">
+        <div class="section-header-center">
+            <h2>You May Also Like</h2>
+            <p class="text-light">Curated picks just for you.</p>
+        </div>
+
+        <div class="carousel-wrapper">
+            <button class="carousel-btn prev"
+                onclick="document.getElementById('related-products').scrollBy({left: -300, behavior: 'smooth'})">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="scroll-container" id="related-products">
+                <!-- Related products will be loaded here -->
+                <div class="text-center" style="width: 100%;">Loading recommendations...</div>
+            </div>
+            <button class="carousel-btn next"
+                onclick="document.getElementById('related-products').scrollBy({left: 300, behavior: 'smooth'})">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="copyright text-center">
+                &copy; 2025 Luxe Fashion. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('product-details');
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (!id) {
+                container.innerHTML = '<p class="text-center">Product not found.</p>';
+                return;
+            }
+
+            try {
+                const product = await App.fetch(`products.php?id=${id}`);
+
+                document.title = `${product.name} | Luxe Fashion`;
+
+                // CSS for the new elements is now in style.css
+                // We don't need to inject styles here anymore.
+
+                // Prepare Data
+                const images = (product.images && product.images.length > 0) ? product.images : [product.image_url];
+                const sizes = (product.sizes && product.sizes.length > 0) ? product.sizes : ['S', 'M', 'L', 'XL', 'XXL'];
+
+                let currentImageIndex = 0;
+
+                const thumbnailsHtml = images.map((img, i) => `
+                    <img src="${img}" class="thumbnail ${i === 0 ? 'active' : ''}" onclick="changeGenericImage(${i})">
+                `).join('');
+
+                window.changeGenericImage = (index) => {
+                    currentImageIndex = index;
+                    const src = images[index];
+                    const mainImage = document.getElementById('main-image');
+                    mainImage.src = src;
+
+                    // Update Active Thumbnail
+                    document.querySelectorAll('.thumbnail').forEach((t, i) => {
+                        if (i === index) t.classList.add('active');
+                        else t.classList.remove('active');
+                    });
+                };
+
+                window.prevImage = () => {
+                    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                    changeGenericImage(currentImageIndex);
+                };
+
+                window.nextImage = () => {
+                    currentImageIndex = (currentImageIndex + 1) % images.length;
+                    changeGenericImage(currentImageIndex);
+                };
+
+
+                const sizesHtml = sizes.map((s, i) => `
+                    <div class="size-option ${i === 0 ? 'selected' : ''}" onclick="selectSize(this, '${s}')">${s}</div>
+                `).join('');
+
+                container.innerHTML = `
+                    <div class="product-gallery">
+                        <div class="thumbnails-container">
+                             <div class="thumbnails-track">
+                                ${thumbnailsHtml}
+                             </div>
+                        </div>
+                        <div class="main-image-wrapper">
+                            <div class="zoom-container">
+                                <img id="main-image" src="${images[0]}" alt="${product.name}" class="main-image">
+                            </div>
+                            
+                            <!-- Navigation Arrows -->
+                            <button class="gallery-nav prev" onclick="prevImage()"><i class="fas fa-chevron-left"></i></button>
+                            <button class="gallery-nav next" onclick="nextImage()"><i class="fas fa-chevron-right"></i></button>
+                            
+                            <!-- Icons -->
+                            <div class="gallery-icons">
+                                <button class="gallery-icon wishlist-btn" data-id="${product.id}" onclick="App.toggleWishlist(${product.id})">
+                                    <i class="${App.isInWishlist(product.id) ? 'fas' : 'far'} fa-heart"></i>
+                                </button>
+
+                            </div>
+                            <button class="gallery-icon fullscreen-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div style="padding-left: 20px; font-family: var(--font-body);">
+                        
+                        <div class="product-category" style="font-family: var(--font-body); font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">${product.category}</div>
+                        <h1 class="mb-1" style="font-family: var(--font-heading); font-size: 2.5rem; color: #000; font-weight: 700; margin-bottom: 5px;">${product.name}</h1>
+                        <div class="product-price mb-2" style="color: var(--accent); font-size: 1.8rem; font-weight: 700; margin-bottom: 20px;">${App.formatPrice(product.price)}</div>
+                        
+                        <p class="mb-2" style="color: var(--text-light); line-height: 1.6; margin-bottom: 30px; font-size: 0.95rem; white-space: pre-line;">
+                            ${product.description}
+                        </p>
+                        
+                        <!-- Size Selector -->
+                        <div class="mb-2" style="margin-bottom: 25px;">
+                            <label class="form-label" style="font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; display: block; color: #333;">Size</label>
+                            <div id="size-options">
+                                ${sizesHtml}
+                            </div>
+                        </div>
+
+                        <!-- Quantity Selector -->
+                        <div class="mb-2" style="margin-bottom: 25px;">
+                            <label class="form-label" style="font-size: 0.9rem; font-weight: 700; margin-bottom: 10px; display: block; color: #333;">Quantity</label>
+                            <div class="qty-selector" style="border: 1px solid #ddd; width: 120px; height: 45px; display: flex; align-items: center;">
+                                <button class="qty-btn" onclick="updateQty(-1)" style="font-size: 1.2rem;">&minus;</button>
+                                <input type="number" id="qty" value="1" min="1" max="10" class="qty-input" style="font-size: 1rem; width: 40px; font-weight: 600;">
+                                <button class="qty-btn" onclick="updateQty(1)" style="font-size: 1.2rem;">&plus;</button>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                             <button id="buy-now-btn" class="btn" style="width: 100%; background-color: #000; color: white; padding: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 0; border: none; cursor: pointer; transition: background-color 0.3s; font-family: var(--font-heading);">Buy Now</button>
+                             <button id="add-btn" class="btn" style="width: 100%; background-color: white; color: var(--accent); padding: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 0; border: 2px solid var(--accent); cursor: pointer; transition: all 0.3s; font-family: var(--font-heading);">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+
+                // Global function for Size Selection
+                window.selectSize = function (el, size) {
+                    document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                    el.classList.add('selected');
+                    el.dataset.value = size;
+                };
+
+                // Global function for Image Change
+                window.changeMainImage = function (src, el) {
+                    document.getElementById('main-image').src = src;
+                    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                    el.classList.add('active');
+                };
+
+                // Global function for Quantity Update
+                window.updateQty = function (change) {
+                    const input = document.getElementById('qty');
+                    let newVal = parseInt(input.value) + change;
+                    if (newVal < 1) newVal = 1;
+                    if (newVal > parseInt(input.getAttribute('max'))) newVal = parseInt(input.getAttribute('max'));
+                    input.value = newVal;
+                };
+
+                function getProductVariant() {
+                    const qty = document.getElementById('qty').value;
+                    const sizeEl = document.querySelector('.size-option.selected');
+                    const size = sizeEl ? (sizeEl.dataset.value || sizeEl.textContent) : null;
+
+                    if (!size) {
+                        alert('Please select a size.');
+                        return null;
+                    }
+
+                    const productToAdd = { ...product };
+                    productToAdd.name = `${product.name} (${size})`;
+                    productToAdd.id = `${product.id}-${size}`;
+                    return { product: productToAdd, qty };
+                }
+
+                document.getElementById('add-btn').addEventListener('click', () => {
+                    const variant = getProductVariant();
+                    if (variant) App.addToCart(variant.product, variant.qty);
+                });
+
+                document.getElementById('buy-now-btn').addEventListener('click', () => {
+                    const variant = getProductVariant();
+                    if (variant) {
+                        App.addToCart(variant.product, variant.qty);
+                        window.location.href = 'checkout.html';
+                    }
+                });
+
+            } catch (err) {
+                container.innerHTML = '<p class="text-center">Failed to load product details.</p>';
+            }
+
+            // Load Related Products
+            const relatedContainer = document.getElementById('related-products');
+            try {
+                const allProducts = await App.fetch('products.php');
+                const related = allProducts.filter(p => p.id != id);
+
+                relatedContainer.innerHTML = related.map(p => `
+                    <div class="product-card" style="min-width: 280px;">
+                        <div class="product-image">
+                            <a href="product.html?id=${p.id}">
+                                <img src="${p.image_url}" alt="${p.name}">
+                            </a>
+                            <button class="wishlist-btn ${App.isInWishlist(p.id) ? 'active' : ''}" data-id="${p.id}" onclick="App.toggleWishlist(${p.id})">
+                                <i class="${App.isInWishlist(p.id) ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">${p.category}</div>
+                            <h3 class="product-title"><a href="product.html?id=${p.id}">${p.name}</a></h3>
+                            <div class="product-price">${App.formatPrice(p.price)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) { console.log('Failed to load related products'); }
+        });
+    </script>
+</body>
+
+</html>

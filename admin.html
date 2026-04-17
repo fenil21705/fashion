@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Luxe Fashion</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-section {
+            display: none;
+            /* Section hidden by default, shown via JS */
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        /* Sidebar Layout */
+        .admin-wrapper {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        .admin-sidebar {
+            width: 260px;
+            background: #000;
+            /* Pure black */
+            color: #fff;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+        }
+
+        .admin-sidebar h3 {
+            padding: 20px;
+            margin: 0;
+            background: #000;
+            color: #fff;
+            /* White instead of gold */
+            border-bottom: 1px solid #333;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            border-bottom: 1px solid #222;
+        }
+
+        .menu-btn {
+            width: 100%;
+            text-align: left;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 0;
+            /* Rectangular buttons */
+        }
+
+        .menu-btn:hover {
+            background: #111;
+            color: #fff;
+            padding-left: 25px;
+        }
+
+        .menu-btn.active {
+            background: #fff;
+            /* White background */
+            color: #000;
+            /* Black text */
+            font-weight: 600;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 30px;
+            background: #fff;
+            /* White background */
+            overflow-y: auto;
+        }
+
+        /* Existing Styles adapted */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: none;
+            /* Removed shadow */
+            border: 1px solid #eee;
+            border-radius: 0;
+            /* Rectangular */
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background-color: #000;
+            /* Black Header */
+            font-weight: 600;
+            color: #fff;
+            /* White Text */
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-row {
+            background-color: #fafafa;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 0;
+            /* Rectangular */
+            border: 1px solid #000;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-modal:hover {
+            color: #000;
+        }
+
+        /* Overriding global button styles for admin specifically if needed or adding specific helper classes */
+        .btn,
+        .btn-sm,
+        .btn-outline,
+        .btn-rect {
+            border-radius: 0 !important;
+        }
+
+        /* Redesigned Product Modal Styles */
+        .product-modal-content {
+            /* Specific class for new modal content if needed, or modify generic */
+            max-width: 650px;
+            padding: 0;
+            border: none;
+            border-radius: 0;
+            background: #fff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            /* Increase max height */
+        }
+
+        .modal-header-nav {
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header-nav h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header-nav p {
+            margin: 5px 0 0;
+            color: #777;
+            font-size: 0.9rem;
+            font-weight: 400;
+            font-family: var(--font-body);
+        }
+
+        .modal-body-scroll {
+            padding: 20px 30px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .form-section {
+            border: 1px solid #eee;
+            margin-bottom: 20px;
+            border-radius: 0;
+            /* Rectangular as requested */
+            background: #fff;
+        }
+
+        .form-section-header {
+            background: #fdfdfd;
+            padding: 12px 20px;
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .form-section-body {
+            padding: 20px;
+        }
+
+        .size-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .size-checkbox {
+            display: none;
+        }
+
+        .size-box {
+            min-width: 45px;
+            height: 35px;
+            padding: 0 10px;
+            border: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            background: #fff;
+            color: #333;
+        }
+
+        .size-checkbox:checked+.size-box {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+        .upload-zone {
+            border: 2px dashed #eee;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            background: #fafafa;
+        }
+
+        .upload-zone:hover {
+            border-color: #000;
+        }
+
+        .upload-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .modal-footer {
+            padding: 15px 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            background: #fff;
+            gap: 15px;
+        }
+
+        .modal-footer .btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 0;
+        }
+
+        /* Image Preview Styles */
+        .img-preview-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .img-preview-wrapper img {
+            display: block;
+        }
+
+        .img-remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .img-remove-btn:hover {
+            background: #333;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header" style="background:#fff; border-bottom:1px solid #eee;">
+        <div style="padding: 0 30px;">
+            <nav class="navbar"
+                style="display: flex; justify-content: space-between; align-items: center; height: 70px;">
+                <a href="admin.html" class="logo">LUXE. Admin</a>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a href="index.html" class="btn btn-sm btn-outline"
+                        style="border: none; padding: 5px 10px; background: transparent; color: #000;">Back to
+                        Site</a>
+                    <button id="logoutBtn" class="btn btn-sm btn-outline"
+                        style="display:none; border: none; padding: 5px 10px; background: transparent; color: #000;"
+                        onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <div id="login-section" class="section container" style="max-width: 400px; margin-top: 50px;">
+        <h2 class="text-center mb-2">Admin Login</h2>
+        <form id="admin-login-form">
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="admin-pass" class="form-control" placeholder="Enter Admin Password" required
+                    style="border-radius: 0;">
+            </div>
+            <button type="submit" class="btn btn-primary"
+                style="width: 100%; border-radius: 0; background-color: #000; border: 1px solid #000;">Access
+                Dashboard</button>
+        </form>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard-section" class="admin-section">
+        <div class="admin-wrapper">
+            <aside class="admin-sidebar" id="sidebar-menu">
+                <h3>Admin Panel</h3>
+                <ul class="sidebar-menu">
+                    <li><button id="btn-orders" class="menu-btn active" onclick="switchTab('orders')"><i
+                                class="fas fa-shopping-bag"></i> Orders</button></li>
+                    <li><button id="btn-products" class="menu-btn" onclick="switchTab('products')"><i
+                                class="fas fa-tshirt"></i> Products</button></li>
+                    <li><button id="btn-users" class="menu-btn" onclick="switchTab('users')"><i
+                                class="fas fa-users"></i> Users</button></li>
+                </ul>
+            </aside>
+
+            <main class="admin-content">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                    <h1 style="margin: 0;">Dashboard</h1>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="grid grid-3" style="margin-bottom: 30px; gap: 20px;">
+                    <div
+                        style="background: white; padding: 20px; border: 1px solid #eee; box-shadow: none; display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 2rem; color: #000;"><i class="fas fa-rupee-sign"></i></div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.5rem;" id="stat-revenue">0</h3>
+                            <small style="color: #777;">Total Revenue</small>
+                        </div>
+                    </div>
+                    <div
+                        style="background: white; padding: 20px; border: 1px solid #eee; box-shadow: none; display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 2rem; color: #000;"><i class="fas fa-shopping-bag"></i></div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.5rem;" id="stat-orders">0</h3>
+                            <small style="color: #777;">Total Orders</small>
+                        </div>
+                    </div>
+                    <div
+                        style="background: white; padding: 20px; border: 1px solid #eee; box-shadow: none; display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 2rem; color: #000;"><i class="fas fa-users"></i></div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.5rem;" id="stat-users">0</h3>
+                            <small style="color: #777;">Total Users</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-orders">
+                    <h3>Recent Orders</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User ID</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                    <th>Payment</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-body">
+                                <!-- JS Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-products" style="display: none;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3>Products</h3>
+                        <button class="btn btn-sm" onclick="openAddProductModal()"
+                            style="border-radius: 0; background: #000; color: #fff; border: 1px solid #000;"><i
+                                class="fas fa-plus"></i> Add
+                            Product</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Gender</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-body">
+                                <!-- JS Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-users" style="display: none;">
+                    <h3>Registered Users</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-body">
+                                <!-- JS Injected -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="product-modal-content">
+            <div class="modal-header-nav">
+                <div>
+                    <h2 id="modal-title"><i class="fas fa-plus"></i> Add Product</h2>
+                    <p>Add a new product to your store catalog</p>
+                </div>
+                <span class="close-modal" onclick="closeProductModal()" style="position:static;">&times;</span>
+            </div>
+
+            <div class="modal-body-scroll">
+                <form id="add-product-form">
+                    <input type="hidden" name="id" id="product-id">
+
+                    <!-- Basic Info Section -->
+                    <div class="form-section">
+                        <div class="form-section-header">Basic Info</div>
+                        <div class="form-section-body">
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Enter product name"
+                                    required style="border-radius: 0;">
+                            </div>
+                            <div class="grid grid-2" style="gap: 20px;">
+                                <div class="form-group">
+                                    <label>Price (₹)</label>
+                                    <div class="input-group" style="display:flex; align-items:center;">
+                                        <span
+                                            style="padding:10px; background:#f9f9f9; border:1px solid #eee; border-right:none; display: flex; align-items: center; justify-content: center; width: 40px;">₹</span>
+                                        <input type="number" name="price" class="form-control"
+                                            style="border-left:none; border-radius: 0;" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select name="gender" class="form-control" style="border-radius: 0;">
+                                        <option value="Men">Men</option>
+                                        <option value="Women">Women</option>
+                                        <option value="Unisex">Unisex</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select name="category" class="form-control" style="border-radius: 0;">
+                                    <option value="T-Shirt">T-Shirt</option>
+                                    <option value="Shirt">Shirt</option>
+                                    <option value="Dress">Dress</option>
+                                    <option value="Jeans">Jeans</option>
+                                    <option value="Top">Top</option>
+                                    <option value="Shorts">Shorts</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Available Sizes -->
+                    <div class="form-section">
+                        <div class="form-section-header">Available Sizes</div>
+                        <div class="form-section-body">
+                            <div class="size-selector">
+                                <label>
+                                    <input type="checkbox" name="sizes" value="XS" class="size-checkbox">
+                                    <span class="size-box">XS</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="sizes" value="S" class="size-checkbox">
+                                    <span class="size-box">S</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="sizes" value="M" class="size-checkbox">
+                                    <span class="size-box">M</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="sizes" value="L" class="size-checkbox">
+                                    <span class="size-box">L</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="sizes" value="XL" class="size-checkbox">
+                                    <span class="size-box">XL</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="sizes" value="XXL" class="size-checkbox">
+                                    <span class="size-box">XXL</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Images -->
+                    <div class="form-section">
+                        <div class="form-section-header">Product Images</div>
+                        <div class="form-section-body">
+                            <div class="upload-zone" onclick="document.getElementById('imageInput').click()">
+                                <input type="file" id="imageInput" class="upload-input" multiple accept="image/*"
+                                    onchange="handleImagePreview()">
+                                <div style="color: #ccc; font-size: 2rem; margin-bottom: 10px;"><i
+                                        class="fas fa-camera"></i></div>
+                                <p style="margin:0; color:#666;">Drag & drop images here or click to browse (Max 4)</p>
+                                <small style="color: #999;">First image will be the cover.</small>
+                            </div>
+                            <div id="image-preview-container"
+                                style="display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-section">
+                        <div class="form-section-header">Description</div>
+                        <div class="form-section-body">
+                            <textarea name="description" class="form-control" rows="4"
+                                placeholder="Describe material, fit, wash care, etc."
+                                style="border-radius: 0; resize: vertical;"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline btn-rect" onclick="closeProductModal()"
+                    style="border: 1px solid #ccc; background: white; color: #000;">Cancel</button>
+                <button type="button" class="btn btn-primary btn-rect"
+                    onclick="document.getElementById('add-product-form').requestSubmit()"
+                    style="background: #000; border: 1px solid #000; color: white;" id="modal-submit-btn">Add
+                    Product</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/main.js"></script>
+    <script>
+        let adminData = null;
+
+        document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const pass = document.getElementById('admin-pass').value;
+
+            try {
+                const res = await fetch(`backend/api/admin.php?password=${pass}`);
+                if (!res.ok) throw new Error('Invalid Password');
+
+                adminData = await res.json();
+                showDashboard();
+                renderData();
+            } catch (err) {
+                alert('Access Denied: ' + err.message);
+            }
+        });
+
+        function showDashboard() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').classList.add('active');
+            document.getElementById('logoutBtn').style.display = 'inline-block';
+        }
+
+        function logout() {
+            location.reload();
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${tab}`).classList.add('active');
+
+            document.getElementById('tab-orders').style.display = 'none';
+            document.getElementById('tab-users').style.display = 'none';
+            document.getElementById('tab-products').style.display = 'none';
+
+            document.getElementById(`tab-${tab}`).style.display = 'block';
+        }
+
+        async function renderData() {
+            // Render Users
+            const usersBody = document.getElementById('users-body');
+            usersBody.innerHTML = adminData.users.map(u => `
+                <tr>
+                    <td>${u.id}</td>
+                    <td>${u.name}</td>
+                    <td>${u.email}</td>
+                    <td><button class="btn btn-sm btn-outline" onclick="viewUser(${u.id})">View</button></td>
+                </tr>
+            `).join('');
+
+            // Fetch and Render Products
+            try {
+                const pRes = await fetch(`backend/api/products.php?t=${Date.now()}`);
+                const products = await pRes.json();
+
+                const productsBody = document.getElementById('products-body');
+                productsBody.innerHTML = products.map(p => `
+                    <tr>
+                        <td>${p.id}</td>
+                        <td><img src="${p.image_url}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;"></td>
+                        <td>${p.name}</td>
+                        <td>${p.category}</td>
+                        <td>${App.formatPrice(p.price)}</td>
+                        <td>${p.gender || '-'}</td>
+                        <td>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-sm btn-outline" style="color: blue; border: 1px solid blue; padding: 6px 10px;" onclick="editProduct(${p.id})" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline" style="color: red; border: 1px solid red; padding: 6px 10px;" onclick="deleteProduct(${p.id})" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (e) {
+                console.error('Failed to load products', e);
+            }
+
+            // Stats
+            const totalRevenue = adminData.orders.reduce((sum, o) => sum + parseFloat(o.total_amount), 0);
+            document.getElementById('stat-revenue').textContent = App.formatPrice(totalRevenue);
+            document.getElementById('stat-orders').textContent = adminData.orders.length;
+            document.getElementById('stat-users').textContent = adminData.users.length;
+
+            // Render Orders
+            const ordersBody = document.getElementById('orders-body');
+            ordersBody.innerHTML = adminData.orders.slice().reverse().map(o => {
+                const ship = o.shipping_info || {};
+                const pay = o.payment_info || { method: 'N/A' };
+                const orderDate = new Date(o.created_at).toLocaleDateString();
+
+                // Format Address nicely
+                const fullAddress = ship.firstName
+                    ? `${ship.firstName} ${ship.lastName}<br>${ship.address}, ${ship.city}, ${ship.state} - ${ship.pinCode}`
+                    : 'N/A';
+
+                // Format Payment nicely
+                let payDetails = pay.method.toUpperCase();
+                if (pay.details) {
+                    if (pay.details.last4) payDetails += ` (..${pay.details.last4})`;
+                    if (pay.details.upiId) payDetails += ` (${pay.details.upiId})`;
+                }
+
+                // Status Dropdown
+                const statusOptions = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
+                const statusSelect = `
+                    <select onchange="updateOrderStatus(${o.id}, this.value, this)" style="padding: 4px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.8rem; background: ${getStatusColor(o.status)}; color: #fff;">
+                        ${statusOptions.map(s => `<option value="${s}" ${o.status === s ? 'selected' : ''} style="background: white; color: black;">${s.charAt(0).toUpperCase() + s.slice(1)}</option>`).join('')}
+                    </select>
+                `;
+
+                return `
+                <tr>
+                    <td>#${o.id}</td>
+                    <td>User ${o.user_id}</td>
+                    <td>${orderDate}</td>
+                    <td>${App.formatPrice(parseFloat(o.total_amount))}</td>
+                    <td>${payDetails}</td>
+                    <td>${statusSelect}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline" onclick="toggleDetails(${o.id})">Details</button>
+                    </td>
+                </tr>
+                <tr id="details-${o.id}" class="detail-row" style="display:none;">
+                    <td colspan="7">
+                        <div class="grid grid-2" style="padding: 10px; font-size: 0.9rem;">
+                            <div>
+                                <strong>Shipping Address:</strong><br>
+                                ${fullAddress}
+                            </div>
+                            <div>
+                                <strong>Items:</strong>
+                                <ul style="list-style: none; padding: 0;">
+                                    ${o.items.map(i => `<li>Product ID: ${i.product_id} x ${i.quantity}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case 'confirmed': return '#27ae60'; // Green
+                case 'shipped': return '#2980b9'; // Blue
+                case 'delivered': return '#8e44ad'; // Purple
+                case 'cancelled': return '#c0392b'; // Red
+                default: return '#f39c12'; // Orange (Pending)
+            }
+        }
+
+        async function updateOrderStatus(id, newStatus, element) {
+            try {
+                const res = await fetch('backend/api/orders.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'update_status', id: id, status: newStatus })
+                });
+
+                if (!res.ok) {
+                    let errMsg = 'API Error: ' + res.status;
+                    try {
+                        const errData = await res.json();
+                        errMsg = errData.message || errMsg;
+                    } catch (e) {
+                        const text = await res.text();
+                        console.error('API Raw Error:', text);
+                        errMsg += ' - ' + text.substring(0, 100); // Show first 100 chars of error
+                    }
+                    throw new Error(errMsg);
+                }
+
+                // Refresh Data without reload
+                // Manually update local data for visual speed or re-fetch
+                // Let's re-fetch for accuracy
+                document.getElementById('admin-login-form').dispatchEvent(new Event('submit'));
+                // Or easier: refresh page, but that logs out... 
+                // We should refetch usage existing logic if accessible or just leave visual update
+                // The select change already stays. Visual cue:
+                alert(`Order #${id} marked as ${newStatus}`);
+
+                // Update color
+                if (element) {
+                    element.style.background = getStatusColor(newStatus);
+                }
+
+            } catch (e) {
+                alert('Error: ' + e.message);
+                console.error(e);
+            }
+        }
+
+        function toggleDetails(id) {
+            const row = document.getElementById(`details-${id}`);
+            row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+        }
+
+        function viewUser(id) {
+            const user = adminData.users.find(u => u.id === id);
+            const userOrders = adminData.orders.filter(o => o.user_id == id);
+
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <h2 class="mb-2">${user.name}</h2>
+                <p class="mb-2"><strong>Email:</strong> ${user.email}</p>
+                <div style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">
+                     User ID: ${user.id} | Orders: ${userOrders.length}
+                </div>
+                
+                <h3 style="border-top: 1px solid var(--border); padding-top: 20px;">Order History</h3>
+                ${userOrders.length === 0 ? '<p>No orders found for this user.</p>' : `
+                    <div style="margin-top: 15px;">
+                        ${userOrders.slice().reverse().map(o => `
+                            <div style="border: 1px solid var(--border); padding: 15px; border-radius: var(--radius); margin-bottom: 10px; background: #fafafa;">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:500;">
+                                    <span>Order #${o.id}</span>
+                                    <span>${App.formatPrice(o.total_amount)}</span>
+                                </div>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">
+                                    Date: ${new Date(o.created_at).toLocaleDateString()} <span style="margin: 0 5px;">&bull;</span> Status: ${(o.status || 'Pending').charAt(0).toUpperCase() + (o.status || 'Pending').slice(1)}<br>
+                                    Items: ${o.items.length}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `}
+            `;
+
+            document.getElementById('user-modal').style.display = 'flex'; // Changed to flex to match CSS
+        }
+
+        function closeModal() {
+            document.getElementById('user-modal').style.display = 'none';
+        }
+
+        function openAddProductModal() {
+            // Reset for Add Mode
+            document.getElementById('add-product-form').reset();
+            document.getElementById('product-id').value = '';
+            document.getElementById('modal-title').textContent = 'Add New Product';
+            document.getElementById('modal-submit-btn').textContent = 'Add Product';
+            document.getElementById('image-preview-container').innerHTML = '';
+            selectedImages = [];
+
+            document.getElementById('product-modal').style.display = 'flex';
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').style.display = 'none';
+        }
+
+        let selectedImages = [];
+
+        function handleImagePreview() {
+            const input = document.getElementById('imageInput');
+            handleFiles(input.files);
+        }
+
+        function handleFiles(files) {
+            // Check if adding these files would exceed the limit
+            if (selectedImages.length + files.length > 4) {
+                alert(`You can only have up to 4 images. You already have ${selectedImages.length} and are trying to add ${files.length}.`);
+                document.getElementById('imageInput').value = '';
+                return;
+            }
+
+
+
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    selectedImages.push(e.target.result); // Base64 string
+                    renderImagePreviews();
+                };
+                reader.readAsDataURL(file);
+            });
+
+            document.getElementById('imageInput').value = '';
+        }
+
+        // Initialize Drag and Drop
+        document.addEventListener('DOMContentLoaded', () => {
+            const uploadZone = document.querySelector('.upload-zone');
+            if (uploadZone) {
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    uploadZone.addEventListener(eventName, preventDefaults, false);
+                });
+
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    uploadZone.addEventListener(eventName, highlight, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    uploadZone.addEventListener(eventName, unhighlight, false);
+                });
+
+                function highlight(e) {
+                    uploadZone.style.borderColor = '#000';
+                    uploadZone.style.backgroundColor = '#f0f0f0';
+                }
+
+                function unhighlight(e) {
+                    uploadZone.style.borderColor = '#eee';
+                    uploadZone.style.backgroundColor = '#fafafa';
+                }
+
+                uploadZone.addEventListener('drop', handleDrop, false);
+
+                function handleDrop(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    handleFiles(files);
+                }
+            }
+        });
+
+        // Edit Product Logic
+        async function editProduct(id) {
+            try {
+                const res = await fetch(`backend/api/products.php?id=${id}`);
+                const product = await res.json();
+
+                if (!res.ok) throw new Error(product.message || 'Product not found');
+
+                // Populate Form
+                const form = document.getElementById('add-product-form');
+                form.name.value = product.name;
+                form.price.value = product.price;
+                form.description.value = product.description || '';
+                form.category.value = product.category;
+                form.gender.value = product.gender || 'Unisex';
+                document.getElementById('product-id').value = product.id;
+
+                // Handle Sizes
+                const checkboxes = document.querySelectorAll('input[name="sizes"]');
+                checkboxes.forEach(cb => cb.checked = false); // Clear first
+                if (product.sizes && Array.isArray(product.sizes)) {
+                    product.sizes.forEach(size => {
+                        const cb = Array.from(checkboxes).find(c => c.value === size);
+                        if (cb) cb.checked = true;
+                    });
+                }
+
+                // Handle Images
+                selectedImages = product.images || [];
+                const container = document.getElementById('image-preview-container');
+                renderImagePreviews();
+
+                // Update UI for Edit Mode
+                document.getElementById('modal-title').textContent = 'Edit Product';
+                document.getElementById('modal-submit-btn').textContent = 'Update Product';
+                document.getElementById('product-modal').style.display = 'flex';
+
+            } catch (error) {
+                console.error(error);
+                alert('Failed to load product details');
+            }
+        }
+
+        document.getElementById('add-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            // Add images to data
+            if (selectedImages.length === 0) {
+                // Use placeholder if no image
+                data.images = ['assets/placeholder.png'];
+            } else {
+                data.images = selectedImages;
+            }
+
+            // Add selected sizes
+            const sizeCheckboxes = document.querySelectorAll('input[name="sizes"]:checked');
+            data.sizes = Array.from(sizeCheckboxes).map(cb => cb.value);
+
+            try {
+                const id = document.getElementById('product-id').value;
+                const url = id
+                    ? `backend/api/products.php?id=${id}`
+                    : 'backend/api/products.php';
+
+                const method = id ? 'PUT' : 'POST';
+
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    alert(id ? 'Product updated successfully!' : 'Product added successfully!');
+                    closeProductModal();
+                    e.target.reset(); // clear form
+                    document.getElementById('image-preview-container').innerHTML = ''; // clear preview
+                    selectedImages = [];
+                    renderData(); // refresh list
+                } else {
+                    const err = await res.json();
+                    alert('Error: ' + err.message);
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Failed to add product');
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const userModal = document.getElementById('user-modal');
+            const productModal = document.getElementById('product-modal');
+            if (event.target == userModal) {
+                userModal.style.display = "none";
+            }
+            if (event.target == productModal) {
+                productModal.style.display = "none";
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure you want to delete this product?')) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`backend/api/products.php?id=${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok) {
+                    alert('Product deleted successfully!');
+                    renderData();
+                } else {
+                    const err = await res.json();
+                    alert('Error: ' + (err.message || 'Failed to delete'));
+                }
+            } catch (error) {
+                console.error('Delete failed:', error);
+                alert('Connection error');
+            }
+        }
+
+        function renderImagePreviews() {
+            const container = document.getElementById('image-preview-container');
+            container.innerHTML = '';
+
+            selectedImages.forEach((src, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'img-preview-wrapper';
+
+                const img = document.createElement('img');
+                img.src = src;
+                img.style.width = '60px';
+                img.style.height = '60px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '0';
+                img.style.border = '1px solid #ddd';
+
+                const removeBtn = document.createElement('div');
+                removeBtn.className = 'img-remove-btn';
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation(); // prevent bubbling
+                    removeImage(index);
+                };
+
+                wrapper.appendChild(img);
+                wrapper.appendChild(removeBtn);
+                container.appendChild(wrapper);
+            });
+        }
+
+        function removeImage(index) {
+            selectedImages.splice(index, 1);
+            renderImagePreviews();
+            // Clear input value so same file can be selected again
+            document.getElementById('imageInput').value = '';
+        }
+
+    </script>
+</body>
+
+</html>

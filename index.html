@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe | Premium Fashion E-commerce</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero {
+            height: 90vh;
+            /* Full viewport height minus header roughly */
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1920') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="marquee-container">
+            Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on
+            Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns
+            &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free
+            Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid
+            Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New
+            Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="nav-links">
+                    <a href="index.html" class="active">Home</a>
+                    <a href="shop.html?cat=Men">Men</a>
+                    <a href="shop.html?cat=Women">Women</a>
+
+                </div>
+                <a href="index.html" class="logo">LUXE.</a>
+                <div class="nav-icons">
+                    <a href="wishlist.html"><i class="far fa-heart"></i></a>
+                    <a href="shop.html"><i class="fas fa-store"></i></a>
+                    <a href="login.html" id="auth-link"><i class="fas fa-user"></i></a>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content container">
+            <p class="hero-subtitle">Step into Style &ndash; Find Your Perfect Look!</p>
+            <h1 class="hero-title">Trendy, Stylish,<br>Brand New!</h1>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <a href="shop.html?cat=Men" class="btn btn-outline-white">Men</a>
+                <a href="shop.html?cat=Women" class="btn btn-white">Women</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section container animate-on-scroll">
+        <div class="section-header-center">
+            <div>
+                <h2>Featured Arrivals</h2>
+                <p class="text-light" style="margin-bottom: 0;">Handpicked pieces for this season.</p>
+            </div>
+            <a href="shop.html" class="view-all-link">View All <i class="fas fa-chevron-right"
+                    style="font-size: 0.8em; margin-left: 5px;"></i></a>
+        </div>
+        <div class="carousel-wrapper">
+            <button class="carousel-btn prev"
+                onclick="document.getElementById('featured-products').scrollBy({left: -300, behavior: 'smooth'})">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <div class="scroll-container" id="featured-products">
+                <!-- Products will be loaded here via JS -->
+                <div class="text-center" style="width: 100%;">Loading products...</div>
+            </div>
+
+            <button class="carousel-btn next"
+                onclick="document.getElementById('featured-products').scrollBy({left: 300, behavior: 'smooth'})">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Banner/CTA -->
+    <section class="section animate-on-scroll" style="background-color: var(--background-alt);">
+        <div class="container grid grid-2" style="align-items: center;">
+            <div>
+                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=800"
+                    alt="Fashion Model" style="border-radius: var(--radius);">
+            </div>
+            <div style="padding: 40px;">
+                <h2>Spring Collection 2025</h2>
+                <p class="mb-2">Experience the lightness of our new fabrics and the vibrancy of spring colors. Our new
+                    collection is designed for the modern individual.</p>
+                <a href="shop.html" class="btn">Explore Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section container animate-on-scroll">
+        <div class="grid grid-2" style="align-items: center; gap: 60px;">
+            <div style="order: 2;">
+                <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&q=80&w=800"
+                    alt="About Luxe"
+                    style="border-radius: var(--radius); width: 100%; height: 400px; object-fit: cover;">
+            </div>
+            <div style="order: 1;">
+                <h2 class="mb-2">Our Story</h2>
+                <p class="mb-1" style="line-height: 1.8; color: var(--text-light);">
+                    LUXE was born from a desire to redefine premium fashion. We believe that true luxury lies in the
+                    details—the quality of the fabric, the precision of the stitch, and the timelessness of the design.
+                </p>
+                <p class="mb-2" style="line-height: 1.8; color: var(--text-light);">
+                    Sourced from the finest artisans across India and Italy, our collections are curated for those who
+                    appreciate understated elegance. Sustainable, ethical, and effortlessly chic.
+                </p>
+                <div class="grid grid-3" style="text-align: center; margin-top: 30px;">
+                    <div>
+                        <h3 style="color: var(--accent); margin-bottom: 5px;">5k+</h3>
+                        <small>Happy Clients</small>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--accent); margin-bottom: 5px;">100+</h3>
+                        <small>Products</small>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--accent); margin-bottom: 5px;">15+</h3>
+                        <small>Fabric Sources</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section container">
+        <div class="text-center mb-4">
+            <h2>What Our Clients Say</h2>
+        </div>
+        <div class="grid grid-3">
+            <div
+                style="background: #fff; padding: 30px; border: 1px solid var(--border); border-radius: var(--radius);">
+                <div style="color: var(--accent); margin-bottom: 15px;"><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i></div>
+                <p class="mb-1" style="font-style: italic;">"Absolutely love the quality of the fabrics. The white tee
+                    is a staple in my wardrobe now."</p>
+                <h4 style="margin-bottom: 0; font-size: 1rem;">Rahul S.</h4>
+                <small style="color: var(--text-light);">Mumbai</small>
+            </div>
+            <div
+                style="background: #fff; padding: 30px; border: 1px solid var(--border); border-radius: var(--radius);">
+                <div style="color: var(--accent); margin-bottom: 15px;"><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i></div>
+                <p class="mb-1" style="font-style: italic;">"Fast delivery and premium packaging. Felt like opening a
+                    gift to myself."</p>
+                <h4 style="margin-bottom: 0; font-size: 1rem;">Priya K.</h4>
+                <small style="color: var(--text-light);">Bangalore</small>
+            </div>
+            <div
+                style="background: #fff; padding: 30px; border: 1px solid var(--border); border-radius: var(--radius);">
+                <div style="color: var(--accent); margin-bottom: 15px;"><i class="fas fa-star"></i><i
+                        class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                        class="fas fa-star-half-alt"></i></div>
+                <p class="mb-1" style="font-style: italic;">"Great collection of summer wear. The floral dress is
+                    perfect for my vacation."</p>
+                <h4 style="margin-bottom: 0; font-size: 1rem;">Amit D.</h4>
+                <small style="color: var(--text-light);">Delhi</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section container">
+        <div class="grid grid-2" style="gap: 60px;">
+            <div style="background: var(--background-alt); padding: 40px; border-radius: var(--radius);">
+                <h2 class="mb-2">Get in Touch</h2>
+                <div class="mb-2">
+                    <h4 style="margin-bottom: 5px;"><i class="fas fa-map-marker-alt"
+                            style="color: var(--accent); margin-right: 10px;"></i> Visit Us</h4>
+                    <p style="color: var(--text-light); margin-left: 25px;">xyz<br>Surat,
+                        Gujarat 395006</p>
+                </div>
+                <div class="mb-2">
+                    <h4 style="margin-bottom: 5px;"><i class="fas fa-phone"
+                            style="color: var(--accent); margin-right: 10px;"></i> Call Us</h4>
+                    <p style="color: var(--text-light); margin-left: 25px;">+91 XXXXX XXXXX</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 5px;"><i class="fas fa-envelope"
+                            style="color: var(--accent); margin-right: 10px;"></i> Email Us</h4>
+                    <p style="color: var(--text-light); margin-left: 25px;">luxefashion@gmail.com</p>
+                </div>
+            </div>
+            <div>
+                <form class="grid" style="gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" placeholder="Your Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="Your Email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-control" rows="4" placeholder="How can we help?"></textarea>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="section animate-on-scroll" style="background-color: #000; color: #fff; padding: 80px 0;">
+        <div class="container">
+            <h2 style="color: #fff;">Join the Luxe Life</h2>
+            <p class="mb-2" style="max-width: 600px; margin: 0 auto 30px;">Subscribe to our newsletter to receive
+                exclusive offers, early access to new collections, and style tips.</p>
+            <form style="display: flex; justify-content: center; gap: 10px; max-width: 500px; margin: 0 auto;">
+                <input type="email" placeholder="Your email address"
+                    style="padding: 12px 20px; border-radius: 30px; border: none; flex-grow: 1; outline: none;">
+                <button class="btn btn-accent"
+                    style="border-radius: 30px; padding: 12px 30px; white-space: nowrap;">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>LUXE.</h3>
+                    <p style="color: #aaa;">Redefining premium fashion for the digital age.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Shop</h3>
+                    <div class="footer-links">
+                        <a href="shop.html?cat=T-Shirt">T-Shirts</a>
+                        <a href="shop.html?cat=Dress">Dresses</a>
+                        <a href="shop.html?cat=Jeans">Jeans</a>
+
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Help</h3>
+                    <div class="footer-links">
+                        <a href="#">Shipping & Returns</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Size Guide</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Stay Connected</h3>
+                    <div class="footer-links">
+                        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                        <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                        <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Luxe Fashion. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Page specific logic
+        document.addEventListener('DOMContentLoaded', async () => {
+            const container = document.getElementById('featured-products');
+
+            try {
+                // Fetch all products
+                const products = await App.fetch('products.php');
+                // No slicing, show all products
+                const featured = products;
+
+
+
+                container.innerHTML = featured.map(p => `
+                    <div class="product-card">
+                        <div class="product-image">
+                            <a href="product.html?id=${p.id}">
+                                <img src="${p.image_url}" alt="${p.name}">
+                            </a>
+                            <button class="wishlist-btn ${App.isInWishlist(p.id) ? 'active' : ''}" data-id="${p.id}" onclick="App.toggleWishlist(${p.id})">
+                                <i class="${App.isInWishlist(p.id) ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">${p.category}</div>
+                            <h3 class="product-title"><a href="product.html?id=${p.id}">${p.name}</a></h3>
+                            <div class="product-price">${App.formatPrice(p.price)}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                container.innerHTML = '<p class="text-center">Failed to load products. Please ensure backend is running.</p>';
+            }
+        });
+    </script>
+</body>
+
+</html>

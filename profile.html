@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | Luxe Fashion</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .profile-sidebar {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: var(--radius);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .profile-nav-item {
+            display: block;
+            padding: 12px 15px;
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px solid #f9f9f9;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .profile-nav-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-nav-item:hover,
+        .profile-nav-item.active {
+            background-color: #f5f5f5;
+            padding-left: 20px;
+            font-weight: 600;
+        }
+
+        .profile-nav-item.active {
+            border-left: 3px solid #000;
+        }
+
+        .profile-content h2 {
+            font-size: 1.8rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+        }
+
+        .info-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .order-card {
+            border: 1px solid #eee;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: var(--radius);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f9f9f9;
+        }
+
+        .order-id {
+            font-weight: 700;
+        }
+
+        .order-status {
+            background: #e9f7ef;
+            color: #27ae60;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .order-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <div class="marquee-container">
+            Free Shipping on Orders Above ₹2500 &bull; Easy Returns &bull; New Arrivals Daily &bull; Extra 10% Off on
+            Prepaid Orders &bull; Use Code: WELCOME10 &bull; Free Shipping on Orders Above ₹2500 &bull; Easy Returns
+            &bull; New Arrivals Daily &bull; Extra 10% Off on Prepaid Orders &bull; Use Code: WELCOME10
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="shop.html?cat=Men">Men</a>
+                    <a href="shop.html?cat=Women">Women</a>
+
+                </div>
+                <a href="index.html" class="logo">LUXE.</a>
+                <div class="nav-icons">
+                    <a href="wishlist.html"><i class="far fa-heart"></i></a>
+                    <a href="shop.html"><i class="fas fa-store"></i></a>
+                    <a href="profile.html" class="active"><i class="fas fa-user"></i></a>
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>My Account</h1>
+        </div>
+    </div>
+
+    <section class="section container">
+        <div class="profile-container">
+            <aside class="profile-sidebar">
+                <nav>
+                    <div class="profile-nav-item active" onclick="switchTab('profile')">My Profile</div>
+                    <div class="profile-nav-item" onclick="switchTab('orders')">Order History</div>
+                    <div class="profile-nav-item" id="logout-btn" style="color: #e74c3c;">Logout</div>
+                </nav>
+            </aside>
+
+            <main class="profile-content">
+                <!-- Profile Tab -->
+                <div id="profile-tab">
+                    <h2>Profile Information</h2>
+                    <div class="info-group">
+                        <span class="info-label">Full Name</span>
+                        <div class="info-value" id="user-name">Loading...</div>
+                    </div>
+                    <div class="info-group">
+                        <span class="info-label">Email Address</span>
+                        <div class="info-value" id="user-email">Loading...</div>
+                    </div>
+                    <!-- Future: Add 'Edit Profile' button -->
+                </div>
+
+                <!-- Orders Tab -->
+                <div id="orders-tab" style="display: none;">
+                    <h2>Order History</h2>
+                    <div id="orders-list">
+                        <p>Loading orders...</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="copyright text-center">
+                &copy; 2025 Luxe Fashion. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = App.state.user;
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Populate Profile Info
+            document.getElementById('user-name').textContent = user.name;
+            document.getElementById('user-email').textContent = user.email;
+
+            // Load Orders
+            await loadOrders();
+        });
+
+        async function loadOrders() {
+            const container = document.getElementById('orders-list');
+            try {
+                // Fetch orders for the logged-in user
+                const user = App.state.user;
+                const orders = await App.fetch(`orders.php?user_id=${user.id}`);
+
+                if (orders.length === 0) {
+                    container.innerHTML = '<p>No orders found.</p>';
+                    return;
+                }
+
+                container.innerHTML = orders.reverse().map(order => {
+                    const statusColor = getStatusColor(order.status || 'pending');
+                    const statusText = (order.status || 'pending').charAt(0).toUpperCase() + (order.status || 'pending').slice(1);
+                    const formattedDate = new Date(order.created_at).toLocaleDateString();
+
+                    return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <div class="order-id">Order #${order.id}</div>
+                                <small>${formattedDate}</small>
+                            </div>
+                            <div style="text-align: right;">
+                                <span class="order-status" style="background: ${statusColor}; color: white;">${statusText}</span>
+                                <div style="font-weight: 700; margin-top: 5px;">${App.formatPrice(order.total_amount)}</div>
+                            </div>
+                        </div>
+                        <div class="order-items">
+                            ${order.items.map(item => `
+                                <div class="order-item">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 600;">Product ID: ${item.product_id}</div>
+                                        <small>Qty: ${item.quantity} x ${App.formatPrice(item.price_at_time || item.price || 0)}</small>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `}).join('');
+
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<p>Failed to load orders.</p>';
+            }
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case 'confirmed': return '#27ae60'; // Green
+                case 'shipped': return '#2980b9'; // Blue
+                case 'delivered': return '#8e44ad'; // Purple
+                case 'cancelled': return '#c0392b'; // Red
+                default: return '#f39c12'; // Orange (Pending)
+            }
+        }
+
+        function switchTab(tabName) {
+            // Update Sidebar
+            document.querySelectorAll('.profile-nav-item').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update Content
+            if (tabName === 'profile') {
+                document.getElementById('profile-tab').style.display = 'block';
+                document.getElementById('orders-tab').style.display = 'none';
+            } else if (tabName === 'orders') {
+                document.getElementById('profile-tab').style.display = 'none';
+                document.getElementById('orders-tab').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+
+</html>
