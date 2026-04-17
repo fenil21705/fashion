@@ -18,8 +18,10 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-    // In production, log this error instead of showing it
-    throw new \PDOException($e->getMessage(), (int) $e->getCode());
+    header("Content-Type: application/json; charset=UTF-8");
+    http_response_code(500);
+    echo json_encode(["message" => "Database Connection Failed: " . $e->getMessage()]);
+    exit();
 }
 
 // Enable CORS for development
