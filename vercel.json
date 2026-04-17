@@ -2,7 +2,7 @@
   "builds": [
     {
       "src": "backend/api/*.php",
-      "use": "vercel-php@0.6.1"
+      "use": "vercel-php@0.9.0"
     },
     {
       "src": "**/*.{html,css,js,png,jpg,jpeg,svg,gif,json}",
