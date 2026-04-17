@@ -1,13 +1,14 @@
 <?php
 // backend/config.php
 
-$host = 'localhost';
-$db = 'fashion_ecommerce';
-$user = 'root';
-$pass = '';
+$host = 'mysql-1239591f-fenilsojitra21-900b.g.aivencloud.com';
+$port = 15853;
+$db = 'defaultdb';
+$user = 'avnadmin';
+$pass = getenv('DB_PASSWORD'); // Pulled securely from Vercel!
 $charset = 'utf8mb4';
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$dsn = "mysql:host=$host;port=$port;dbname=$db;charset=$charset";
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
